@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root .ql-container {
+	border-bottom-left-radius: 0.2em;
+	border-bottom-right-radius: 0.2em;
+	background: transparent;
+	color: white;
+	font-size: 14px;
+	border: 1px solid rgb(108, 114, 127);
+}
+
+#root .ql-snow.ql-toolbar {
+	display: block;
+	background: rgb(75, 85, 99);
+	border-top-left-radius: 0.2em;
+	border-top-right-radius: 0.2em;
+	border: 1px solid rgb(108, 114, 127);
+	border-bottom: none;
+}
+
+#root .ql-snow.ql-toolbar button svg {
+	color: white;
+}
+
+#root .ql-container.light {
+	color: black;
+	border: 1px solid rgb(209, 209, 209);
+}
+
+#root .ql-snow.ql-toolbar.light {
+	background: rgb(243, 244, 246);
+	border: 1px solid rgb(209, 209, 209);
+	border-bottom: none;
+}
+
+#root .ql-snow.ql-toolbar button svg.light {
+	color: black;
+}
+
+#root .ql-editor {
+	min-height: 125px;
+}
