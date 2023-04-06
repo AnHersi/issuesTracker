@@ -70,6 +70,8 @@ const CreateForm: React.ForwardRefRenderFunction<CreateFormRef, Props> = (
 			.then((response) => {
 				console.log(response);
 				clearForm();
+				const modal = document.getElementById("create-modal");
+				(modal as HTMLElement).classList.add("hidden");
 			})
 			.catch((err: Error) => {
 				console.log(err);

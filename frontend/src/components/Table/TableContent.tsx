@@ -17,7 +17,7 @@ type TableColumns = {
 };
 
 const Index: React.FunctionComponent = () => {
-	const issues = useContext(issuesContext);
+	const { issues } = useContext(issuesContext);
 
 	const data: Data[] = useMemo(() => {
 		const filteredData = issues
