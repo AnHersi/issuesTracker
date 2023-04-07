@@ -42,3 +42,7 @@
 #root .ql-editor {
 	min-height: 125px;
 }
+
+.Toastify__toast-theme--dark {
+	background: rgb(33, 41, 54) !important;
+}

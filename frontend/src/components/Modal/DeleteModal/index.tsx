@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import { fetchIssuesData, issuesContext } from "../../../App";
 import { TableData } from "../../Table/TableContent";
+import { toast } from "react-toastify";
 
 type Props = {
 	issues: TableData[];
@@ -17,12 +18,21 @@ const Index: React.FunctionComponent<Props> = ({ issues }) => {
 		axios
 			.delete(`http://localhost:8080/issues?ids=${issuesIds.join(",")}`)
 			.then((response) => {
-				console.log(response);
+				const modal = document.getElementById("delete-modal");
+				(modal as HTMLElement).classList.add("hidden");
 				fetchIssuesData().then((data) => {
 					setIssues(data);
 				});
-				const modal = document.getElementById("delete-modal");
-				(modal as HTMLElement).classList.add("hidden");
+				toast.success("Successfully deleted " + (issuesIds.length > 1 ? "issues" : "issue"), {
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
+				});
 			})
 			.catch((err: Error) => {
 				console.log(err);

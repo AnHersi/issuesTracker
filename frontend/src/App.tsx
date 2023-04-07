@@ -1,7 +1,9 @@
 import React, { createContext, useState, useEffect, Dispatch, SetStateAction } from "react";
 import axios from "axios";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home";
+import { ToastContainer } from "react-toastify";
 
 export type Issue = {
 	id: string;
@@ -56,6 +58,7 @@ const App: React.FunctionComponent = () => {
 					<Route path="*" element={<Navigate to="/" />} />
 				</Routes>
 			</BrowserRouter>
+			<ToastContainer />
 		</issuesContext.Provider>
 	);
 };

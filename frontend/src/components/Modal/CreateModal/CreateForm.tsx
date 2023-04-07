@@ -87,7 +87,7 @@ const CreateForm: React.ForwardRefRenderFunction<CreateFormRef, Props> = (
 					setIssues(data);
 				});
 				setIsSubmitting(false);
-				toast.success("🦄 Wow so easy!", {
+				toast.success("Successfully created issue", {
 					position: "top-right",
 					autoClose: 3000,
 					hideProgressBar: false,
@@ -95,7 +95,7 @@ const CreateForm: React.ForwardRefRenderFunction<CreateFormRef, Props> = (
 					pauseOnHover: true,
 					draggable: true,
 					progress: undefined,
-					theme: "light",
+					theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
 				});
 			})
 			.catch((err: Error) => {
