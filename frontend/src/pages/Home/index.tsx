@@ -3,7 +3,6 @@ import SideBar from "../../components/SideBar";
 import Table from "../../components/Table/index";
 import AboutModal from "../../components/Modal/AboutModal/index";
 import CreateModal from "../../components/Modal/CreateModal/index";
-import DeleteModal from "../../components/Modal/DeleteModal/index";
 
 const Index: React.FunctionComponent = () => {
 	return (
@@ -12,7 +11,6 @@ const Index: React.FunctionComponent = () => {
 			<Table />
 			<AboutModal />
 			<CreateModal />
-			<DeleteModal />
 		</div>
 	);
 };

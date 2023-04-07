@@ -37,4 +37,13 @@ router.get("/all", async (req, res) => {
 	res.send(issues);
 });
 
+router.delete("/:id", async (req, res) => {
+	try {
+		const issue = await Issue.deleteOne({ id: req.params.id });
+		res.send(issue);
+	} catch (err: unknown) {
+		if (err instanceof Error) console.log(err.message);
+	}
+});
+
 export default router;

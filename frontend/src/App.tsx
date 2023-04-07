@@ -14,34 +14,42 @@ export type Issue = {
 	_id: string;
 };
 
-export type IssuesContextType = {
+export type IssuesContext = {
 	issues: Issue[];
-	shouldRefetch: boolean;
-	setShouldRefetch: Dispatch<SetStateAction<boolean>>;
+	setIssues: Dispatch<SetStateAction<Issue[]>>;
 };
 
-export const issuesContext = createContext<IssuesContextType>({
+export const issuesContext = createContext<IssuesContext>({
 	issues: [],
-	shouldRefetch: false,
-	setShouldRefetch: () => {},
+	setIssues: () => {},
 });
 
-const App: React.FunctionComponent = () => {
-	const [issues, setIssues] = useState<Issue[]>([]);
-	const [shouldRefetch, setShouldRefetch] = useState<boolean>(false);
-
-	useEffect(() => {
-		axios.get("http://localhost:8080/issues/all").then((response) => {
+export const fetchIssuesData = (): Promise<Issue[]> => {
+	return axios
+		.get("http://localhost:8080/issues/all")
+		.then((response) => {
 			const filteredData = response.data.map((issue: Issue) => {
 				const { _id, __v, ...rest } = issue;
 				return rest;
 			});
-			setIssues(filteredData);
+			return filteredData;
+		})
+		.catch((err: Error) => {
+			return [];
 		});
-	}, [shouldRefetch]);
+};
+
+const App: React.FunctionComponent = () => {
+	const [issues, setIssues] = useState<Issue[]>([]);
+
+	useEffect(() => {
+		fetchIssuesData().then((data) => {
+			setIssues(data);
+		});
+	}, []);
 
 	return (
-		<issuesContext.Provider value={{ issues, shouldRefetch, setShouldRefetch }}>
+		<issuesContext.Provider value={{ issues, setIssues }}>
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" element={<Home />} />

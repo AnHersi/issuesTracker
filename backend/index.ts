@@ -16,8 +16,8 @@ app.use(
 	})
 );
 
-app.use(bodyParser.json({ limit: "10mb" }));
-app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
+app.use(bodyParser.json({ limit: "15mb" }));
+app.use(bodyParser.urlencoded({ limit: "15mb", extended: true }));
 app.use(express.json());
 
 app.use("/issues", issuesRouter);

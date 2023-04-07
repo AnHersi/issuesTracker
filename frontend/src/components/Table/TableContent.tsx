@@ -1,35 +1,31 @@
-import React, { useMemo, useContext } from "react";
+import React, { useMemo, useContext, useState, useEffect } from "react";
 import { Column, useTable } from "react-table";
 import { issuesContext, Issue } from "../../App";
+import DeleteModal from "../Modal/DeleteModal";
 
-type Data = {
+export type TableData = {
+	id: string;
 	issueTitle: string;
 	status: string;
 	created_at: string;
 	action?: string | undefined;
 };
 
-type TableColumns = {
-	issueTitle: string;
-	status: string;
-	created_at: string;
-	action?: string;
-};
-
 const Index: React.FunctionComponent = () => {
 	const { issues } = useContext(issuesContext);
+	const [selectedIssue, setSelectedIssue] = useState<TableData | null>(null);
 
-	const data: Data[] = useMemo(() => {
+	const data: TableData[] = useMemo(() => {
 		const filteredData = issues
 			? issues.map((issue) => {
-					const { issueTitle, status, created_at } = issue as Issue;
-					return { issueTitle, status, created_at };
+					const { id, issueTitle, status, created_at } = issue as Issue;
+					return { id, issueTitle, status, created_at };
 			  })
 			: [];
 		return filteredData;
 	}, [issues]);
 
-	const columns: Column<TableColumns>[] = useMemo(
+	const columns: Column<TableData>[] = useMemo(
 		() => [
 			{ Header: "Issue Title", accessor: "issueTitle" },
 			{ Header: "Status", accessor: "status" },
@@ -86,7 +82,7 @@ const Index: React.FunctionComponent = () => {
 					{rows.map((row) => {
 						prepareRow(row);
 						return (
-							<tr {...row.getRowProps()}>
+							<tr {...row.getRowProps()} issue-id={row.original.id}>
 								<td className="w-4 p-4">
 									<div className="flex items-center">
 										<input
@@ -129,18 +125,20 @@ const Index: React.FunctionComponent = () => {
 										case 3:
 											return (
 												<td className="flex justify-center items-center px-6 py-4 space-x-3">
-													<a
-														href="#"
-														className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-													>
+													<button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
 														Edit
-													</a>
-													<a
-														href="#"
+													</button>
+													<button
+														type="button"
+														onClick={() => {
+															document.querySelector("#delete-modal")?.classList.remove("hidden");
+															document.querySelector("#delete-modal")?.classList.add("flex");
+															setSelectedIssue(row.original);
+														}}
 														className="font-medium text-red-600 dark:text-red-500 hover:underline"
 													>
 														Remove
-													</a>
+													</button>
 												</td>
 											);
 									}
@@ -150,6 +148,8 @@ const Index: React.FunctionComponent = () => {
 					})}
 				</tbody>
 			</table>
+
+			<DeleteModal issue={selectedIssue} />
 
 			{/* <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-24">
 				<thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

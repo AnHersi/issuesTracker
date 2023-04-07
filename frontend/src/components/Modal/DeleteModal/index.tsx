@@ -1,11 +1,36 @@
-import React from "react";
+import React, { useContext } from "react";
+import axios from "axios";
+import { fetchIssuesData, issuesContext } from "../../../App";
+import { TableData } from "../../Table/TableContent";
 
-const Index: React.FunctionComponent = () => {
+type Props = {
+	issue: TableData | null;
+};
+
+const Index: React.FunctionComponent<Props> = ({ issue }) => {
+	const { setIssues } = useContext(issuesContext);
+
+	const handleDelete = () => {
+		axios
+			.delete(`http://localhost:8080/issues/${issue?.id}`)
+			.then((response) => {
+				console.log(response);
+				fetchIssuesData().then((data) => {
+					setIssues(data);
+				});
+				const modal = document.getElementById("delete-modal");
+				(modal as HTMLElement).classList.add("hidden");
+			})
+			.catch((err: Error) => {
+				console.log(err);
+			});
+	};
+
 	return (
 		<div
 			id="delete-modal"
 			tabIndex={-1}
-			className="fixed top-0 left-0 right-0 z-50 hidden p-4 bg-black bg-opacity-50 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full"
+			className="justify-center items-center hidden fixed top-0 left-0 right-0 z-50 p-4 bg-black bg-opacity-50 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full"
 		>
 			<div className="relative w-full h-full max-w-md md:h-auto">
 				<div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -57,6 +82,7 @@ const Index: React.FunctionComponent = () => {
 							<button
 								data-modal-hide="popup-modal"
 								type="button"
+								onClick={handleDelete}
 								className="text-white bg-blue-700 hover:bg-blue-600 font-medium rounded text-sm inline-flex items-center px-3 py-2 text-center mr-2"
 							>
 								Delete issue

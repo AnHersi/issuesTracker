@@ -39,9 +39,9 @@ const Index: React.FunctionComponent = () => {
 					type="button"
 					data-modal-target="delete-modal"
 					data-modal-toggle="delete-modal"
-					className="flex items-center justify-between w-[6rem] text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-md text-[15px] px-3 py-2.5 text-center  mr-2  dark:bg-blue-700 dark:hover:bg-blue-800"
+					className="flex items-center justify-between w-[5.75rem] text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-md text-sm px-3 py-[0.69rem] text-center  mr-2  dark:bg-blue-700 dark:hover:bg-blue-800"
 				>
-					<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
 						<g fill="currentColor">
 							<path d="M3 6.386c0-.484.345-.877.771-.877h2.665c.529-.016.996-.399 1.176-.965l.03-.1l.115-.391c.07-.24.131-.45.217-.637c.338-.739.964-1.252 1.687-1.383c.184-.033.378-.033.6-.033h3.478c.223 0 .417 0 .6.033c.723.131 1.35.644 1.687 1.383c.086.187.147.396.218.637l.114.391l.03.1c.18.566.74.95 1.27.965h2.57c.427 0 .772.393.772.877s-.345.877-.771.877H3.77c-.425 0-.77-.393-.77-.877Z" />
 							<path
