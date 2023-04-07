@@ -1,18 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import { fetchIssuesData, issuesContext } from "../../../App";
 import { TableData } from "../../Table/TableContent";
 
 type Props = {
-	issue: TableData | null;
+	issues: TableData[];
 };
 
-const Index: React.FunctionComponent<Props> = ({ issue }) => {
+const Index: React.FunctionComponent<Props> = ({ issues }) => {
 	const { setIssues } = useContext(issuesContext);
 
+	const issuesIds = issues.map((issue) => issue.id);
+
 	const handleDelete = () => {
+		console.log(issuesIds);
 		axios
-			.delete(`http://localhost:8080/issues/${issue?.id}`)
+			.delete(`http://localhost:8080/issues?ids=${issuesIds.join(",")}`)
 			.then((response) => {
 				console.log(response);
 				fetchIssuesData().then((data) => {
@@ -72,7 +75,7 @@ const Index: React.FunctionComponent<Props> = ({ issue }) => {
 						</svg>
 						<div className="px-6">
 							<h3 className="mb-5 mt-8 text-lg text-gray-700 font-medium dark:text-gray-300">
-								Are you sure you want to delete this issue?
+								Are you sure you want to delete {issues.length > 1 ? "these issues" : "this issue"}
 							</h3>
 							<h5 className="mb-5 text-sm text-gray-700 font-medium dark:text-gray-300">
 								Once you delete, it's gone for good.

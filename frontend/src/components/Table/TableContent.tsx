@@ -1,4 +1,4 @@
-import React, { useMemo, useContext, useState, useEffect } from "react";
+import React, { useMemo, useContext, useState, ChangeEvent } from "react";
 import { Column, useTable } from "react-table";
 import { issuesContext, Issue } from "../../App";
 import DeleteModal from "../Modal/DeleteModal";
@@ -13,7 +13,7 @@ export type TableData = {
 
 const Index: React.FunctionComponent = () => {
 	const { issues } = useContext(issuesContext);
-	const [selectedIssue, setSelectedIssue] = useState<TableData | null>(null);
+	const [selectedIssues, setSelectedIssues] = useState<TableData[]>([]);
 
 	const data: TableData[] = useMemo(() => {
 		const filteredData = issues
@@ -43,6 +43,22 @@ const Index: React.FunctionComponent = () => {
 		data,
 	});
 
+	const handleToggle = (issue: TableData): void => {
+		if (selectedIssues.includes(issue)) {
+			setSelectedIssues(selectedIssues.filter((item) => item !== issue));
+		} else {
+			setSelectedIssues([...selectedIssues, issue]);
+		}
+	};
+
+	const handleCheckAllIssues = (event: ChangeEvent<HTMLInputElement>) => {
+		if ((event.target as HTMLInputElement).checked) {
+			setSelectedIssues(issues);
+		} else {
+			setSelectedIssues([]);
+		}
+	};
+
 	return (
 		<>
 			<table
@@ -56,6 +72,7 @@ const Index: React.FunctionComponent = () => {
 								<input
 									id="checkbox-all-search"
 									type="checkbox"
+									onChange={handleCheckAllIssues}
 									className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
 								/>
 								<label htmlFor="checkbox-all-search" className="sr-only">
@@ -82,12 +99,17 @@ const Index: React.FunctionComponent = () => {
 					{rows.map((row) => {
 						prepareRow(row);
 						return (
-							<tr {...row.getRowProps()} issue-id={row.original.id}>
+							<tr
+								{...row.getRowProps()}
+								className="bg-white border-b cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+							>
 								<td className="w-4 p-4">
 									<div className="flex items-center">
 										<input
 											id="checkbox-table-search-1"
 											type="checkbox"
+											checked={selectedIssues.includes(row.original)}
+											onChange={() => handleToggle(row.original)}
 											className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
 										/>
 										<label htmlFor="checkbox-table-search-1" className="sr-only">
@@ -133,7 +155,7 @@ const Index: React.FunctionComponent = () => {
 														onClick={() => {
 															document.querySelector("#delete-modal")?.classList.remove("hidden");
 															document.querySelector("#delete-modal")?.classList.add("flex");
-															setSelectedIssue(row.original);
+															setSelectedIssues([row.original]);
 														}}
 														className="font-medium text-red-600 dark:text-red-500 hover:underline"
 													>
@@ -149,7 +171,7 @@ const Index: React.FunctionComponent = () => {
 				</tbody>
 			</table>
 
-			<DeleteModal issue={selectedIssue} />
+			<DeleteModal issues={selectedIssues} />
 
 			{/* <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-24">
 				<thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

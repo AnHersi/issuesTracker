@@ -7,9 +7,10 @@ import React, {
 	useImperativeHandle,
 	useContext,
 } from "react";
-import { fetchIssuesData, issuesContext } from "../../../App";
-import { ImBin } from "react-icons/im";
 import axios from "axios";
+import { ImBin } from "react-icons/im";
+import { toast } from "react-toastify";
+import { fetchIssuesData, issuesContext } from "../../../App";
 
 type Props = {
 	quills: any[];
@@ -86,6 +87,16 @@ const CreateForm: React.ForwardRefRenderFunction<CreateFormRef, Props> = (
 					setIssues(data);
 				});
 				setIsSubmitting(false);
+				toast.success("🦄 Wow so easy!", {
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+				});
 			})
 			.catch((err: Error) => {
 				console.log(err);

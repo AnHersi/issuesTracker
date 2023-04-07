@@ -1,4 +1,4 @@
-import React, { RefObject, useRef } from "react";
+import React, { useRef } from "react";
 import { useQuill } from "react-quilljs";
 import BlotFormatter from "quill-blot-formatter";
 import CreateForm from "./CreateForm";

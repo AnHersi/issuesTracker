@@ -46,4 +46,14 @@ router.delete("/:id", async (req, res) => {
 	}
 });
 
+router.delete("/", async (req, res) => {
+	const ids = (req.query.ids as string).split(",");
+	try {
+		const issues = await Issue.deleteMany({ id: { $in: ids } });
+		res.send(issues);
+	} catch (err: unknown) {
+		if (err instanceof Error) console.log(err.message);
+	}
+});
+
 export default router;
