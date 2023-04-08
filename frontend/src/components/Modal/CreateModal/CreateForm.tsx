@@ -110,7 +110,7 @@ const CreateForm: React.ForwardRefRenderFunction<CreateFormRef, Props> = (
 				});
 			})
 			.catch((err: Error) => {
-				console.log(err);
+				console.error(err);
 				setIsSubmitting(false);
 			});
 	};
