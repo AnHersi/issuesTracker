@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import { fetchIssuesData, issuesContext } from "../../../App";
-import { TableData } from "../../Table/TableContent";
+import { TableData } from "../../Table";
 import { toast } from "react-toastify";
 
 type Props = {
@@ -17,9 +17,8 @@ const Index: React.FunctionComponent<Props> = ({ issues }) => {
 		console.log(issuesIds);
 		axios
 			.delete(`http://localhost:8080/issues?ids=${issuesIds.join(",")}`)
-			.then((response) => {
-				const modal = document.getElementById("delete-modal");
-				(modal as HTMLElement).classList.add("hidden");
+			.then(() => {
+				hideModal();
 				fetchIssuesData().then((data) => {
 					setIssues(data);
 				});
@@ -37,6 +36,11 @@ const Index: React.FunctionComponent<Props> = ({ issues }) => {
 			.catch((err: Error) => {
 				console.log(err);
 			});
+	};
+
+	const hideModal = (): void => {
+		const modal = document.getElementById("delete-modal");
+		(modal as HTMLElement).classList.add("hidden");
 	};
 
 	return (

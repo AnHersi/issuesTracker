@@ -1,55 +1,21 @@
-import React, { useMemo, useContext, useState, ChangeEvent } from "react";
-import { Column, useTable } from "react-table";
-import { issuesContext, Issue } from "../../App";
+import React, { Dispatch, SetStateAction } from "react";
+import { TableData } from ".";
 import DeleteModal from "../Modal/DeleteModal";
 
-export type TableData = {
-	id: string;
-	issueTitle: string;
-	status: string;
-	created_at: string;
-	action?: string | undefined;
+type Props = {
+	table: any;
+	selectedIssues: TableData[];
+	setSelectedIssues: Dispatch<SetStateAction<TableData[]>>;
+	handleToggle: (issue: TableData) => void;
 };
 
-const Index: React.FunctionComponent = () => {
-	const { issues } = useContext(issuesContext);
-	const [selectedIssues, setSelectedIssues] = useState<TableData[]>([]);
-
-	const data: TableData[] = useMemo(() => {
-		const filteredData = issues
-			? issues.map((issue) => {
-					const { id, issueTitle, status, created_at } = issue as Issue;
-					return { id, issueTitle, status, created_at };
-			  })
-			: [];
-		return filteredData;
-	}, [issues]);
-
-	const columns: Column<TableData>[] = useMemo(
-		() => [
-			{ Header: "Issue Title", accessor: "issueTitle" },
-			{ Header: "Status", accessor: "status" },
-			{ Header: "Date Created", accessor: "created_at" },
-			{
-				Header: "Action",
-				accessor: "action",
-			},
-		],
-		[]
-	);
-
-	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
-		columns,
-		data,
-	});
-
-	const handleToggle = (issue: TableData): void => {
-		if (selectedIssues.includes(issue)) {
-			setSelectedIssues(selectedIssues.filter((item) => item !== issue));
-		} else {
-			setSelectedIssues([...selectedIssues, issue]);
-		}
-	};
+const Index: React.FunctionComponent<Props> = ({
+	table,
+	selectedIssues,
+	setSelectedIssues,
+	handleToggle,
+}) => {
+	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = table;
 
 	return (
 		<>
@@ -60,8 +26,8 @@ const Index: React.FunctionComponent = () => {
 				<thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 					<tr>
 						<th scope="col" className="p-4 pr-12 py-6"></th>
-						{headerGroups.map((headerGroup) =>
-							headerGroup.headers.map((column, index) => {
+						{headerGroups.map((headerGroup: any) =>
+							headerGroup.headers.map((column: any, index: number) => {
 								return index === 3 ? (
 									<th scope="col" className="px-24 py-3 flex justify-center">
 										Action
@@ -76,7 +42,7 @@ const Index: React.FunctionComponent = () => {
 					</tr>
 				</thead>
 				<tbody {...getTableBodyProps()}>
-					{rows.map((row) => {
+					{rows.map((row: any) => {
 						prepareRow(row);
 						return (
 							<tr
@@ -97,7 +63,7 @@ const Index: React.FunctionComponent = () => {
 										</label>
 									</div>
 								</td>
-								{row.cells.map((cell, index) => {
+								{row.cells.map((cell: any, index: number) => {
 									switch (index) {
 										case 0:
 											return (

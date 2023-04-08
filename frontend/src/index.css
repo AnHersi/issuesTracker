@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+	--toastify-icon-color-success: rgb(45, 104, 233);
+}
+
 #root .ql-container {
 	border-bottom-left-radius: 0.2em;
 	border-bottom-right-radius: 0.2em;
@@ -45,4 +49,8 @@
 
 .Toastify__toast-theme--dark {
 	background: rgb(33, 41, 54) !important;
+}
+
+.Toastify__progress-bar--success {
+	background: rgb(45, 104, 233) !important;
 }
