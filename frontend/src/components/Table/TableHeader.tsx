@@ -1,6 +1,20 @@
-import * as React from "react";
+import React, { MouseEvent } from "react";
 
-const Index: React.FunctionComponent = () => {
+type Props = {
+	handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	state: any;
+};
+
+const Index: React.FunctionComponent<Props> = ({ handleChange, state }) => {
+	const handleClick = (event: MouseEvent<HTMLInputElement>): void => {
+		const checkboxes = document.getElementsByName("status");
+		checkboxes.forEach((checkbox) => {
+			if (checkbox !== event.target) {
+				(checkbox as HTMLInputElement).checked = false;
+			}
+		});
+	};
+
 	return (
 		<div className="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
 			<div className="w-full md:w-1/2">
@@ -98,7 +112,10 @@ const Index: React.FunctionComponent = () => {
 								<input
 									id="apple"
 									type="checkbox"
-									value=""
+									name="status"
+									value="solved"
+									onClick={handleClick}
+									onChange={handleChange}
 									className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
 								/>
 								<label
@@ -112,7 +129,10 @@ const Index: React.FunctionComponent = () => {
 								<input
 									id="fitbit"
 									type="checkbox"
-									value=""
+									name="status"
+									value="unsolved"
+									onClick={handleClick}
+									onChange={handleChange}
 									className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
 								/>
 								<label

@@ -29,7 +29,7 @@ const Index: React.FunctionComponent = () => {
 	const columns: Column<TableData>[] = useMemo(
 		() => [
 			{ Header: "Issue Title", accessor: "issueTitle" },
-			{ Header: "Status", accessor: "status" },
+			{ Header: "Status", accessor: "status", filter: "equals" },
 			{ Header: "Date Created", accessor: "created_at" },
 			{
 				Header: "Action",
@@ -47,6 +47,8 @@ const Index: React.FunctionComponent = () => {
 		useFilters
 	);
 
+	const { setFilter, setAllFilters, state } = table;
+
 	const handleToggle = (issue: TableData): void => {
 		if (selectedIssues.includes(issue)) {
 			setSelectedIssues(selectedIssues.filter((item) => item !== issue));
@@ -55,11 +57,20 @@ const Index: React.FunctionComponent = () => {
 		}
 	};
 
+	const handleFilter = (e: ChangeEvent<HTMLInputElement>): void => {
+		const value = (e.target as HTMLInputElement).value;
+		if (value == state.filters[0]?.value) {
+			setAllFilters([]);
+		} else {
+			setFilter("status", value);
+		}
+	};
+
 	return (
 		<section className="bg-white dark:bg-gray-900 py-3 sm:py-5 sm:ml-60">
 			<div className="px-4 mx-auto max-w-screen-2xl lg:px-12">
 				<div className="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
-					<TableHeader />
+					<TableHeader handleChange={handleFilter} state={state} />
 					<div className="overflow-x-auto mt-3">
 						<TableContent
 							table={table}

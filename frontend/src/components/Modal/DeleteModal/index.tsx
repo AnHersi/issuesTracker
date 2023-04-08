@@ -14,7 +14,6 @@ const Index: React.FunctionComponent<Props> = ({ issues }) => {
 	const issuesIds = issues.map((issue) => issue.id);
 
 	const handleDelete = () => {
-		console.log(issuesIds);
 		axios
 			.delete(`http://localhost:8080/issues?ids=${issuesIds.join(",")}`)
 			.then(() => {
@@ -34,7 +33,7 @@ const Index: React.FunctionComponent<Props> = ({ issues }) => {
 				});
 			})
 			.catch((err: Error) => {
-				console.log(err);
+				console.error(err);
 			});
 	};
 
