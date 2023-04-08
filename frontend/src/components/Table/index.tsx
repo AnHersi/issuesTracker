@@ -1,4 +1,4 @@
-import React, { useMemo, useContext, useState, ChangeEvent } from "react";
+import React, { useMemo, useContext, useState, ChangeEvent, useEffect } from "react";
 import { Column, useFilters, useTable } from "react-table";
 import { issuesContext, Issue } from "../../App";
 import TableHeader from "./TableHeader";
@@ -16,6 +16,7 @@ const Index: React.FunctionComponent = () => {
 	const { issues } = useContext(issuesContext);
 	const [selectedIssues, setSelectedIssues] = useState<TableData[]>([]);
 	const [searchTerm, setSearchTerm] = useState<string>("");
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const data: TableData[] = useMemo(() => {
 		const filteredData = issues
@@ -69,6 +70,12 @@ const Index: React.FunctionComponent = () => {
 		}
 	};
 
+	useEffect(() => {
+		if (issues.length) {
+			setIsLoading(false);
+		}
+	}, [issues]);
+
 	return (
 		<section className="bg-white dark:bg-gray-900 py-3 sm:py-5 sm:ml-60">
 			<div className="px-4 mx-auto max-w-screen-2xl lg:px-12">
@@ -84,6 +91,7 @@ const Index: React.FunctionComponent = () => {
 							selectedIssues={selectedIssues}
 							setSelectedIssues={setSelectedIssues}
 							handleToggle={handleToggle}
+							isLoading={isLoading}
 						/>
 					</div>
 				</div>
