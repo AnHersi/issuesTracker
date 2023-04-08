@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home";
 import { ToastContainer } from "react-toastify";
+//@ts-ignore
+import { Sugar } from "react-preloaders";
 
 export type Issue = {
 	id: string;
