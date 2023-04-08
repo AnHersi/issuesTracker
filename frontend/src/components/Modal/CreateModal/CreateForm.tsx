@@ -40,9 +40,12 @@ const CreateForm: React.ForwardRefRenderFunction<CreateFormRef, Props> = (
 	const containerRef = useRef(null);
 	const formRef = useRef(null);
 
+	const toggle = toggleRef.current as unknown as HTMLElement;
+	const container = containerRef.current as unknown as HTMLElement;
+
 	const solutionToggle = (): void => {
-		(toggleRef.current as unknown as HTMLElement).classList.toggle("hidden");
-		(containerRef.current as unknown as HTMLElement).classList.toggle("hidden");
+		toggle.classList.toggle("hidden");
+		container.classList.toggle("hidden");
 		clearEditor([1]);
 	};
 
@@ -61,6 +64,13 @@ const CreateForm: React.ForwardRefRenderFunction<CreateFormRef, Props> = (
 	const hideModal = (): void => {
 		const modal = document.getElementById("create-modal");
 		(modal as HTMLElement).classList.add("hidden");
+	};
+
+	const hideContainer = (): void => {
+		if (!container.classList.contains("hidden")) {
+			toggle.classList.remove("hidden");
+			container.classList.toggle("hidden");
+		}
 	};
 
 	const clearEditor = (indexes: number[]): void => {
@@ -83,6 +93,7 @@ const CreateForm: React.ForwardRefRenderFunction<CreateFormRef, Props> = (
 			.then(() => {
 				hideModal();
 				clearForm();
+				hideContainer();
 				fetchIssuesData().then((data) => {
 					setIssues(data);
 				});

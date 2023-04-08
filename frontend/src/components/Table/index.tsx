@@ -15,16 +15,19 @@ export type TableData = {
 const Index: React.FunctionComponent = () => {
 	const { issues } = useContext(issuesContext);
 	const [selectedIssues, setSelectedIssues] = useState<TableData[]>([]);
+	const [searchTerm, setSearchTerm] = useState<string>("");
 
 	const data: TableData[] = useMemo(() => {
 		const filteredData = issues
-			? issues.map((issue) => {
-					const { id, issueTitle, status, created_at } = issue as Issue;
-					return { id, issueTitle, status, created_at };
-			  })
+			? issues
+					.filter((issue) => issue.issueTitle.includes(searchTerm))
+					.map((issue) => {
+						const { id, issueTitle, status, created_at } = issue as Issue;
+						return { id, issueTitle, status, created_at };
+					})
 			: [];
 		return filteredData;
-	}, [issues]);
+	}, [issues, searchTerm]);
 
 	const columns: Column<TableData>[] = useMemo(
 		() => [
@@ -70,7 +73,11 @@ const Index: React.FunctionComponent = () => {
 		<section className="bg-white dark:bg-gray-900 py-3 sm:py-5 sm:ml-60">
 			<div className="px-4 mx-auto max-w-screen-2xl lg:px-12">
 				<div className="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
-					<TableHeader handleChange={handleFilter} state={state} />
+					<TableHeader
+						handleFilter={handleFilter}
+						searchTerm={searchTerm}
+						setSearchTerm={setSearchTerm}
+					/>
 					<div className="overflow-x-auto mt-3">
 						<TableContent
 							table={table}

@@ -1,11 +1,12 @@
-import React, { MouseEvent } from "react";
+import React, { MouseEvent, Dispatch, SetStateAction, ChangeEvent } from "react";
 
 type Props = {
-	handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	state: any;
+	handleFilter: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	searchTerm: string;
+	setSearchTerm: Dispatch<SetStateAction<string>>;
 };
 
-const Index: React.FunctionComponent<Props> = ({ handleChange, state }) => {
+const Index: React.FunctionComponent<Props> = ({ handleFilter, searchTerm, setSearchTerm }) => {
 	const handleClick = (event: MouseEvent<HTMLInputElement>): void => {
 		const checkboxes = document.getElementsByName("status");
 		checkboxes.forEach((checkbox) => {
@@ -13,6 +14,10 @@ const Index: React.FunctionComponent<Props> = ({ handleChange, state }) => {
 				(checkbox as HTMLInputElement).checked = false;
 			}
 		});
+	};
+
+	const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+		setSearchTerm(e.target.value);
 	};
 
 	return (
@@ -43,7 +48,8 @@ const Index: React.FunctionComponent<Props> = ({ handleChange, state }) => {
 							id="simple-search"
 							className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
 							placeholder="Search"
-							required
+							value={searchTerm}
+							onChange={handleChange}
 						/>
 					</div>
 				</form>
@@ -115,7 +121,7 @@ const Index: React.FunctionComponent<Props> = ({ handleChange, state }) => {
 									name="status"
 									value="solved"
 									onClick={handleClick}
-									onChange={handleChange}
+									onChange={handleFilter}
 									className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
 								/>
 								<label
@@ -132,7 +138,7 @@ const Index: React.FunctionComponent<Props> = ({ handleChange, state }) => {
 									name="status"
 									value="unsolved"
 									onClick={handleClick}
-									onChange={handleChange}
+									onChange={handleFilter}
 									className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
 								/>
 								<label
