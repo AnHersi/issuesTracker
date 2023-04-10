@@ -1,12 +1,19 @@
-import React, { MouseEvent, Dispatch, SetStateAction, ChangeEvent } from "react";
+import React, { MouseEvent, Dispatch, SetStateAction, ChangeEvent, useEffect } from "react";
+import { TableData } from ".";
 
 type Props = {
 	handleFilter: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	searchTerm: string;
 	setSearchTerm: Dispatch<SetStateAction<string>>;
+	selectedIssues: TableData[];
 };
 
-const Index: React.FunctionComponent<Props> = ({ handleFilter, searchTerm, setSearchTerm }) => {
+const Index: React.FunctionComponent<Props> = ({
+	handleFilter,
+	searchTerm,
+	setSearchTerm,
+	selectedIssues,
+}) => {
 	const handleClick = (event: MouseEvent<HTMLInputElement>): void => {
 		const checkboxes = document.getElementsByName("status");
 		checkboxes.forEach((checkbox) => {
@@ -57,8 +64,12 @@ const Index: React.FunctionComponent<Props> = ({ handleFilter, searchTerm, setSe
 			<div className="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-4 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
 				<button
 					type="button"
-					data-modal-target="delete-modal"
-					data-modal-toggle="delete-modal"
+					onClick={() => {
+						if (selectedIssues.length > 0) {
+							document.querySelector("#delete-modal")?.classList.remove("hidden");
+							document.querySelector("#delete-modal")?.classList.add("flex");
+						}
+					}}
 					className="flex items-center justify-between w-[5.75rem] text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-md text-sm px-3 py-[0.69rem] text-center  mr-2  dark:bg-blue-700 dark:hover:bg-blue-800"
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">

@@ -84,6 +84,7 @@ const Index: React.FunctionComponent = () => {
 						handleFilter={handleFilter}
 						searchTerm={searchTerm}
 						setSearchTerm={setSearchTerm}
+						selectedIssues={selectedIssues}
 					/>
 					<div className="overflow-x-auto mt-3">
 						<TableContent

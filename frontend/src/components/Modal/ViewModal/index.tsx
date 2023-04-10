@@ -49,20 +49,20 @@ const Index: React.FunctionComponent<Props> = ({ selectedIssues, setSelectedIssu
 							<span className="sr-only">Close modal</span>
 						</button>
 						<div className="px-6 py-6 lg:px-8">
-							<div className="mb-3 text-md font-medium text-gray-900 dark:text-white">Title</div>
+							<div className="mb-3 text-md font-medium text-gray-600 dark:text-white">Title</div>
 							<div className="block mb-8 text-xl font-medium text-gray-600 dark:text-white">
 								{issues[0]?.issueTitle}
 							</div>
-							<div className="mb-2 text-md font-medium  text-gray-900 dark:text-white">
+							<div className="mb-2 text-md font-medium  text-gray-600 dark:text-white">
 								Description
 							</div>
 							<div
-								className="text-black text-sm dark:text-white mb-8 border dark:border-gray-500 rounded-[3px] p-4"
+								className="text-black text-sm dark:text-white mb-8 border border-gray-300 dark:border-gray-500 rounded-[3px] p-3"
 								dangerouslySetInnerHTML={{ __html: issues[0]?.description }}
 							></div>
-							<div className="mb-2 text-md font-medium text-gray-900 dark:text-white">Solution</div>
+							<div className="mb-2 text-md font-medium text-gray-600 dark:text-white">Solution</div>
 							<div
-								className="text-black text-sm dark:text-white  border dark:border-gray-500 rounded-[3px] p-4"
+								className="text-black text-sm dark:text-white  border border-gray-300 dark:border-gray-500 rounded-[3px] p-3"
 								dangerouslySetInnerHTML={{ __html: issues[0]?.solution }}
 							></div>
 						</div>
