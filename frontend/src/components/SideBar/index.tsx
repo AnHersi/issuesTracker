@@ -5,6 +5,7 @@ import SidebarToggle from "./SidebarToggle";
 import AboutModal from "../Modal/AboutModal";
 import { TfiPlus } from "react-icons/tfi";
 import { TfiSearch } from "react-icons/tfi";
+import CreateModal from "../Modal/CreateModal";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 
 const Index: React.FunctionComponent = () => {
@@ -12,6 +13,7 @@ const Index: React.FunctionComponent = () => {
 		<div>
 			<SidebarToggle />
 			<AboutModal />
+			<CreateModal />
 			<aside
 				id="sidebar"
 				className="fixed top-0 left-0 z-40 w-56 h-screen transition-tranform duration-200 -translate-x-full sm:translate-x-0"

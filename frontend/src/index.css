@@ -45,6 +45,7 @@
 
 #root .ql-editor {
 	min-height: 125px;
+	max-height: 150px;
 }
 
 .Toastify__toast-theme--dark {

@@ -4,8 +4,8 @@ const issueSchema = new mongoose.Schema(
 	{
 		id: String,
 		issueTitle: { type: String, required: true },
-		description: { type: Object },
-		solution: { type: Object },
+		description: { type: String },
+		solution: { type: String },
 		status: { type: String, enum: ["solved", "unsolved"], required: true },
 		created_at: { type: String, default: Date.now },
 	},

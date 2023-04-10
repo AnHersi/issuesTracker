@@ -1,21 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import axios from "axios";
 import { fetchIssuesData, issuesContext } from "../../../App";
 import { TableData } from "../../Table";
 import { toast } from "react-toastify";
 
 type Props = {
-	issues: TableData[];
+	selectedIssues: TableData[];
+	setSelectedIssues: Dispatch<SetStateAction<TableData[]>>;
 };
 
-const Index: React.FunctionComponent<Props> = ({ issues }) => {
+const Index: React.FunctionComponent<Props> = ({ selectedIssues, setSelectedIssues }) => {
 	const { setIssues } = useContext(issuesContext);
 
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
-	const issuesIds = issues.map((issue) => issue.id);
+	const issuesIds = selectedIssues.map((issue) => issue.id);
 
-	const handleDelete = () => {
+	const handleDelete = (): void => {
 		setIsDeleting(true);
 
 		axios
@@ -46,6 +47,7 @@ const Index: React.FunctionComponent<Props> = ({ issues }) => {
 	const hideModal = (): void => {
 		const modal = document.getElementById("delete-modal");
 		(modal as HTMLElement).classList.add("hidden");
+		setSelectedIssues([]);
 	};
 
 	return (
@@ -59,7 +61,7 @@ const Index: React.FunctionComponent<Props> = ({ issues }) => {
 					<button
 						type="button"
 						className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-						data-modal-hide="delete-modal"
+						onClick={hideModal}
 					>
 						<svg
 							aria-hidden="true"
@@ -94,7 +96,8 @@ const Index: React.FunctionComponent<Props> = ({ issues }) => {
 						</svg>
 						<div className="px-6">
 							<h3 className="mb-5 mt-8 text-lg text-gray-700 font-medium dark:text-gray-300">
-								Are you sure you want to delete {issues.length > 1 ? "these issues" : "this issue"}
+								Are you sure you want to delete{" "}
+								{selectedIssues.length > 1 ? "these issues" : "this issue"}
 							</h3>
 							<h5 className="mb-5 text-sm text-gray-700 font-medium dark:text-gray-300">
 								Once you delete, it's gone for good.
@@ -131,7 +134,7 @@ const Index: React.FunctionComponent<Props> = ({ issues }) => {
 								Delete issue
 							</button>
 							<button
-								data-modal-hide="delete-modal"
+								onClick={hideModal}
 								type="button"
 								className="text-gray-700 bg-white hover:bg-gray-100 rounded text-sm font-medium px-3 py-2 hover:text-gray-900 focus:z-10 dark:bg-gray-500 dark:text-white dark:hover:text-white dark:hover:bg-gray-600"
 							>

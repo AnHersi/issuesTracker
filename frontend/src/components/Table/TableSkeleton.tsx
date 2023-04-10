@@ -66,6 +66,17 @@ const TableSkeleton: React.FunctionComponent = (props) => {
 					<div className="h-4 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
 				</div>
 			</div>
+			<div className="flex justify-between items-center pt-3 pb-1">
+				<div className="h-6 bg-gray-300 rounded-full dark:bg-gray-600 w-6"></div>
+				<div className="h-4 bg-gray-300 rounded-full dark:bg-gray-600 w-1/3"></div>
+				<div className="h-4 bg-gray-300 rounded-full dark:bg-gray-700 w-[12%]"></div>
+				<div className="h-4 bg-gray-300 rounded-full dark:bg-gray-700 w-[12%]"></div>
+				<div className="flex ml-12">
+					<div className="h-4 bg-gray-300 rounded-full dark:bg-gray-700 mr-2 w-12"></div>
+					<div className="h-4 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+				</div>
+			</div>
+
 			<div className="flex justify-between items-center pt-3">
 				<div className="h-6 bg-gray-300 rounded-full dark:bg-gray-600 w-6"></div>
 				<div className="h-4 bg-gray-300 rounded-full dark:bg-gray-600 w-1/3"></div>

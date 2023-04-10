@@ -10,12 +10,7 @@ router.post("/new", async (req, res) => {
 
 		const id = v4().split("-").pop();
 
-		const date = new Date();
-		const formattedDate = `${date.getDate().toString().padStart(2, "0")}-${(date.getMonth() + 1)
-			.toString()
-			.padStart(2, "0")}-${date.getFullYear()}`;
-
-		const status = !solution || solution.ops[0].insert === "\n" ? "unsolved" : "solved";
+		const status = !solution || solution == "<p><br/></p>" ? "unsolved" : "solved";
 
 		const issue = await Issue.create({
 			id,
@@ -23,7 +18,7 @@ router.post("/new", async (req, res) => {
 			description,
 			solution,
 			status,
-			created_at: formattedDate,
+			created_at: Date.now(),
 		});
 
 		res.send(issue);
@@ -33,7 +28,7 @@ router.post("/new", async (req, res) => {
 });
 
 router.get("/all", async (req, res) => {
-	const issues = await Issue.find({});
+	const issues = await Issue.find({}).sort({ created_at: -1 });
 	res.send(issues);
 });
 

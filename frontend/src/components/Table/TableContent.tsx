@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import { TableData } from ".";
 import TableSkeleton from "./TableSkeleton";
 import DeleteModal from "../Modal/DeleteModal";
+import ViewModal from "../Modal/ViewModal";
 
 type Props = {
 	table: any;
@@ -50,6 +51,9 @@ const Index: React.FunctionComponent<Props> = ({
 						return (
 							<tr
 								{...row.getRowProps()}
+								onClick={() => {
+									handleToggle(row.original);
+								}}
 								className="bg-white border-b cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
 							>
 								<td className="w-4 p-4">
@@ -58,7 +62,7 @@ const Index: React.FunctionComponent<Props> = ({
 											id="checkbox-table-search-1"
 											type="checkbox"
 											checked={selectedIssues.includes(row.original)}
-											onChange={() => handleToggle(row.original)}
+											onClick={() => handleToggle(row.original)}
 											className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
 										/>
 										<label htmlFor="checkbox-table-search-1" className="sr-only">
@@ -92,15 +96,36 @@ const Index: React.FunctionComponent<Props> = ({
 												</td>
 											);
 										case 2:
-											return <td className="px-6 py-4">{cell.value}</td>;
+											return (
+												<td className="px-6 py-4">
+													{(() => {
+														let date = new Date(parseFloat(cell.value));
+														const formattedDate = `${date.getDate().toString().padStart(2, "0")}-${(
+															date.getMonth() + 1
+														)
+															.toString()
+															.padStart(2, "0")}-${date.getFullYear()}`;
+														return formattedDate;
+													})()}
+												</td>
+											);
 										case 3:
 											return (
 												<td className="flex justify-center items-center px-6 py-4 space-x-3">
+													<button
+														onClick={() => {
+															document.querySelector("#view-modal")?.classList.remove("hidden");
+															document.querySelector("#view-modal")?.classList.add("flex");
+															setSelectedIssues([row.original]);
+														}}
+														className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+													>
+														View
+													</button>
 													<button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
 														Edit
 													</button>
 													<button
-														type="button"
 														onClick={() => {
 															document.querySelector("#delete-modal")?.classList.remove("hidden");
 															document.querySelector("#delete-modal")?.classList.add("flex");
@@ -108,7 +133,7 @@ const Index: React.FunctionComponent<Props> = ({
 														}}
 														className="font-medium text-red-600 dark:text-red-500 hover:underline"
 													>
-														Remove
+														Delete
 													</button>
 												</td>
 											);
@@ -120,7 +145,8 @@ const Index: React.FunctionComponent<Props> = ({
 				</tbody>
 			</table>
 
-			<DeleteModal issues={selectedIssues} />
+			<DeleteModal selectedIssues={selectedIssues} setSelectedIssues={setSelectedIssues} />
+			<ViewModal selectedIssues={selectedIssues} setSelectedIssues={setSelectedIssues} />
 			{isLoading && <TableSkeleton />}
 		</>
 	);

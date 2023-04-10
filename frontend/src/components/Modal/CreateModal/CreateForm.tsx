@@ -10,6 +10,7 @@ import React, {
 import axios from "axios";
 import { ImBin } from "react-icons/im";
 import { toast } from "react-toastify";
+import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import { fetchIssuesData, issuesContext } from "../../../App";
 
 type Props = {
@@ -110,7 +111,7 @@ const CreateForm: React.ForwardRefRenderFunction<CreateFormRef, Props> = (
 				});
 			})
 			.catch((err: Error) => {
-				console.error(err);
+				console.log(err);
 				setIsSubmitting(false);
 			});
 	};
@@ -118,7 +119,8 @@ const CreateForm: React.ForwardRefRenderFunction<CreateFormRef, Props> = (
 	[0, 1].forEach((index) => {
 		quills[index]?.on("text-change", () => {
 			const field = index === 0 ? "description" : "solution";
-			const value = quills[index]?.getContents() || "";
+			let value = quills[index]?.getContents() || "";
+			value = new QuillDeltaToHtmlConverter(value.ops).convert();
 
 			setFormData((prev) => ({ ...prev, [field]: value }));
 		});
