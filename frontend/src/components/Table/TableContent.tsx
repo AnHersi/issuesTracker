@@ -21,6 +21,12 @@ const Index: React.FunctionComponent<Props> = ({
 }) => {
 	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = table;
 
+	const modalShow = (modalId: string, row: any) => {
+		document.querySelector(modalId)?.classList.remove("hidden");
+		document.querySelector(modalId)?.classList.add("flex");
+		setSelectedIssues([row.original]);
+	};
+
 	return (
 		<>
 			<table
@@ -113,24 +119,19 @@ const Index: React.FunctionComponent<Props> = ({
 											return (
 												<td className="flex justify-center items-center px-6 py-4 space-x-3">
 													<button
-														onClick={() => {
-															document.querySelector("#view-modal")?.classList.remove("hidden");
-															document.querySelector("#view-modal")?.classList.add("flex");
-															setSelectedIssues([row.original]);
-														}}
+														onClick={() => modalShow("#view-modal", row.original)}
 														className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
 													>
 														View
 													</button>
-													<button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+													<button
+														onClick={() => modalShow("#edit-modal", row.original)}
+														className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+													>
 														Edit
 													</button>
 													<button
-														onClick={() => {
-															document.querySelector("#delete-modal")?.classList.remove("hidden");
-															document.querySelector("#delete-modal")?.classList.add("flex");
-															setSelectedIssues([row.original]);
-														}}
+														onClick={() => modalShow("#delete-modal", row.original)}
 														className="font-medium text-red-600 dark:text-red-500 hover:underline"
 													>
 														Delete

@@ -3,6 +3,7 @@ import { Column, useFilters, useTable } from "react-table";
 import { issuesContext, Issue } from "../../App";
 import TableHeader from "./TableHeader";
 import TableContent from "./TableContent";
+import EditModal from "../Modal/EditModal";
 
 export type TableData = {
 	id: string;
@@ -97,6 +98,7 @@ const Index: React.FunctionComponent = () => {
 					</div>
 				</div>
 			</div>
+			<EditModal selectedIssues={selectedIssues} setSelectedIssues={setSelectedIssues} />
 		</section>
 	);
 };
