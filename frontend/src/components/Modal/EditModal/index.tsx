@@ -88,6 +88,7 @@ const Index: React.FunctionComponent<Props> = ({ selectedIssues, setSelectedIssu
 							quills={[quillDesc, quillSol]}
 							ref={formRef}
 							selectedIssues={selectedIssues}
+							setSelectedIssues={setSelectedIssues}
 						/>
 					</div>
 				</div>

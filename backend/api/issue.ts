@@ -32,6 +32,32 @@ router.get("/all", async (req, res) => {
 	res.send(issues);
 });
 
+router.put("/", async (req, res) => {
+	const id = req.query.id as string;
+
+	try {
+		const { issueTitle, description, solution } = req.body;
+
+		const status = !solution || solution == "<p><br/></p>" ? "unsolved" : "solved";
+
+		console.log(solution);
+
+		const issue = await Issue.findOneAndUpdate(
+			{ id: id },
+			{ issueTitle, description, solution, status },
+			{ new: true }
+		);
+
+		if (!issue) {
+			return res.status(404).send({ message: "Issue not found" });
+		}
+
+		res.send(issue);
+	} catch (err: unknown) {
+		if (err instanceof Error) console.log(err.message);
+	}
+});
+
 router.delete("/:id", async (req, res) => {
 	try {
 		const issue = await Issue.deleteOne({ id: req.params.id });

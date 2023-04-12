@@ -6,8 +6,9 @@ import React, {
 	forwardRef,
 	useImperativeHandle,
 	useContext,
-	useMemo,
+	Dispatch,
 	useEffect,
+	SetStateAction,
 } from "react";
 import axios from "axios";
 import { ImBin } from "react-icons/im";
@@ -23,6 +24,7 @@ type Props = {
 	quills: any[];
 	quillRefs: React.RefObject<any>[];
 	selectedIssues: TableData[];
+	setSelectedIssues: Dispatch<SetStateAction<TableData[]>>;
 };
 
 type FormData = {
@@ -36,7 +38,7 @@ type EditFormRef = {
 };
 
 const EditForm: React.ForwardRefRenderFunction<EditFormRef, Props> = (
-	{ quills, quillRefs, selectedIssues },
+	{ quills, quillRefs, selectedIssues, setSelectedIssues },
 	ref
 ) => {
 	const [formData, setFormData] = useState<FormData>({ issueTitle: "" });
@@ -50,12 +52,12 @@ const EditForm: React.ForwardRefRenderFunction<EditFormRef, Props> = (
 
 	const issues = issueData.filter((issue) => issue.id === selectedIssues[0]?.id);
 
+	const issuesIds = selectedIssues.map((issue) => issue.id);
+
 	const toggle = toggleRef.current as unknown as HTMLElement;
 	const container = containerRef.current as unknown as HTMLElement;
 
 	const solutionToggle = (): void => {
-		toggle.classList.toggle("hidden");
-		container.classList.toggle("hidden");
 		clearEditor([1]);
 	};
 
@@ -72,6 +74,7 @@ const EditForm: React.ForwardRefRenderFunction<EditFormRef, Props> = (
 	};
 
 	const hideModal = (): void => {
+		setSelectedIssues([]);
 		const modal = document.getElementById("edit-modal");
 		(modal as HTMLElement).classList.add("hidden");
 	};
@@ -99,11 +102,10 @@ const EditForm: React.ForwardRefRenderFunction<EditFormRef, Props> = (
 		setIsSubmitting(true);
 
 		axios
-			.post("http://localhost:8080/issues/new", formData)
+			.put(`http://localhost:8080/issues?id=${issuesIds[0]}`, formData)
 			.then(() => {
 				hideModal();
 				clearForm();
-				hideContainer();
 				fetchIssuesData().then((data) => {
 					setIssues(data);
 				});
@@ -153,11 +155,22 @@ const EditForm: React.ForwardRefRenderFunction<EditFormRef, Props> = (
 		[0, 1].forEach((index) => {
 			const field = index === 0 ? "description" : "solution";
 
-			let html = htmlToDelta(issues[0]?.[field]);
+			let delta = htmlToDelta(issues[0]?.[field]);
 
-			console.log(html);
+			selectedIssues[0] ? quills[index].setContents(delta) : null;
+			setFormData({
+				issueTitle: issues[0]?.issueTitle,
+				description: issues[0]?.description,
+				solution: issues[0]?.solution,
+			});
 
-			selectedIssues[0] ? quills[index].setContents(html) : null;
+			if (issues[0]?.description === undefined || issues[0]?.description === "<p><br/></p>") {
+				quills[0]?.setContents(htmlToDelta("<p><br/></p>"));
+			}
+
+			if (issues[0]?.solution === undefined || issues[0]?.solution === "<p><br/></p>") {
+				quills[1]?.setContents(htmlToDelta("<p><br/></p>"));
+			}
 		});
 	}, [selectedIssues]);
 
@@ -195,12 +208,12 @@ const EditForm: React.ForwardRefRenderFunction<EditFormRef, Props> = (
 				type="button"
 				ref={toggleRef}
 				onClick={solutionToggle}
-				className="text-white bg-blue-700 hover:bg-blue-600 font-medium rounded text-sm px-2.5 py-1.5 mb-36 text-center"
+				className="hidden text-white bg-blue-700 hover:bg-blue-600 font-medium rounded text-sm px-2.5 py-1.5 mb-36 text-center"
 			>
 				Add solution
 			</button>
 
-			<div ref={containerRef} className="hidden w-full min-h-lg">
+			<div ref={containerRef} className="w-full min-h-lg">
 				<div className="flex w-full justify-between items-center">
 					<label
 						htmlFor="solution"
@@ -252,7 +265,7 @@ const EditForm: React.ForwardRefRenderFunction<EditFormRef, Props> = (
 					type="button"
 					data-modal-hide="edit-modal"
 					className="flex items-center text-gray-700 bg-white hover:bg-gray-100 rounded text-sm font-medium px-3 py-2 focus:z-10 dark:bg-gray-500 dark:text-white dark:border-gray-500 dark:hover:bg-gray-600"
-					onClick={clearForm}
+					onClick={hideModal}
 				>
 					Cancel
 				</button>
